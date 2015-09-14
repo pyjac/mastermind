@@ -81,77 +81,148 @@ def get_partial_matches(partial_computer,partial_user)
   result
 end
 
-# class GameEngine
-
-#   def display_welcome_message
-#     puts "Welcome to MASTERMIND"
-#     puts "Would you like to #{"(p)lay".colorize(:green)}, read the #{"(i)nstructions".colorize(:blue)}, or #{"(q)uit".colorize(:red)}?"
-#     print "> "
-#   end
-
-  
-
-# end
-
-# GameEngine.run()
 
 
 require 'colorize'
 require 'json'
-user_input = ""
-puts "Welcome to MASTERMIND"
-puts "Would you like to #{"(p)lay".colorize(:green)}, read the #{"(i)nstructions".colorize(:blue)}, or #{"(q)uit".colorize(:red)}?"
-print "> "
-while (user_input != "q")
+
+class GameEngine
+
   
-  user_input = gets.chomp
-  case user_input
-    when 'p','play'
+  def self.run
+    user_input = ""
+    display_welcome_message
+    while (user_input != "q")
+      user_input = gets.chomp
+      case user_input
+        when 'p','play'
+          play_game
+        when 'i','instructions'
+          display_instructions
+        when 'q','quit'
+          puts "Bye Bye"
+          break
+      end
+      display_welcome_message
+    end
 
-        puts "To start the game select a level you would like to play:"
-        puts "Enter (b) for Beginner"
-        puts "Enter (i) for Intermediate"
-        puts "Enter (a) for Advanced"
-        user_level = gets.chomp
-        number_of_guesses = 12
-        case user_level
-          when 'b'
-            user_guess_count = 1
-            game_colours_sequence = generate_sequence('b')
-            #game_colours_sequence = ['G','G','Y','B']
-            user_guess = ""
-            user_guess_count = 1
-            puts "I have generated a beginner sequence with four elements made up of: "
-            print_generated_sequence(game_colours_sequence)
-            puts "Use (q)uit at any time to end the game."
-            puts "What's your guess?"
-            while (user_guess_count <= number_of_guesses || !user_won?(game_colours_sequence,user_guess))
-              
-              user_guess = gets.chomp 
-
-              if(!user_won?(game_colours_sequence,user_guess))
-                exact_matches = 0; partial_matches = 0;
-                #user_guess = user_guess.upcase.split("")
-                exact_matches, partial_computer, partial_user = get_exact_matches(game_colours_sequence, user_guess)
-                partial_matches = get_partial_matches(partial_computer,partial_user)
-                
-                puts "You had #{exact_matches} positions exactly matched and #{partial_matches} near match"
-                puts "You have tried #{user_guess_count} times. You have #{number_of_guesses - user_guess_count} attempts left."
-                puts "Try again: "
-                user_guess_count += 1
-              else
-                puts "Congratulobia You Won"
-                break
-              end
-              
-            end
-        end
-    when 'i','instructions'
-
-    
-    when 'q','quit'
-      puts "Bye Bye"
-      break
   end
+
+  private 
+  def self.display_welcome_message
+    puts "Welcome to MASTERMIND"
+    puts "Would you like to #{"(p)lay".colorize(:green)}, read the #{"(i)nstructions".colorize(:blue)}, or #{"(q)uit".colorize(:red)}?"
+    print "> "
+  end
+
+  def self.accept_user_game_input
+
+  end
+
+  def self.play_game
+    puts "To start the game select a level you would like to play:"
+    puts "Enter (b) for Beginner"
+    puts "Enter (i) for Intermediate"
+    puts "Enter (a) for Advanced"
+    user_level = gets.chomp
+    number_of_guesses = 12
+    case user_level
+      when 'b'
+        user_guess_count = 1
+        game_colours_sequence = generate_sequence('b')
+        #game_colours_sequence = ['G','G','Y','B']
+        user_guess = ""
+        user_guess_count = 1
+        puts "I have generated a beginner sequence with four elements made up of: "
+        print_generated_sequence(game_colours_sequence)
+        puts "Use (q)uit at any time to end the game."
+        puts "What's your guess?"
+        while (user_guess_count <= number_of_guesses)
+          
+          user_guess = gets.chomp 
+
+          if(!user_won?(game_colours_sequence,user_guess))
+            exact_matches = 0; partial_matches = 0;
+            #user_guess = user_guess.upcase.split("")
+            exact_matches, partial_computer, partial_user = get_exact_matches(game_colours_sequence, user_guess)
+            partial_matches = get_partial_matches(partial_computer,partial_user)
+            p game_colours_sequence
+            puts "You had #{exact_matches} positions exactly matched and #{partial_matches} near match"
+            puts "You have tried #{user_guess_count} times. You have #{number_of_guesses - user_guess_count} attempts left."
+            puts "Try again: "
+            user_guess_count += 1
+          else
+            puts "Congratulobia You Won"
+            break
+          end
+        end
+    end
+
+  end 
+
+  def self.display_instructions
+    puts "Enter a sequence of 4 colors containing the generated colors e.g RYBG or YGRB."
+    puts "If you enter fewer than 4 or more than 4 colors, you would receive an error message"
+  end 
+
 end
+
+GameEngine.run()
+
+
+# user_input = ""
+# puts "Welcome to MASTERMIND"
+# puts "Would you like to #{"(p)lay".colorize(:green)}, read the #{"(i)nstructions".colorize(:blue)}, or #{"(q)uit".colorize(:red)}?"
+# print "> "
+# while (user_input != "q")
+  
+#   user_input = gets.chomp
+#   case user_input
+#     when 'p','play'
+
+#         puts "To start the game select a level you would like to play:"
+#         puts "Enter (b) for Beginner"
+#         puts "Enter (i) for Intermediate"
+#         puts "Enter (a) for Advanced"
+#         user_level = gets.chomp
+#         number_of_guesses = 12
+#         case user_level
+#           when 'b'
+#             user_guess_count = 1
+#             game_colours_sequence = generate_sequence('b')
+#             #game_colours_sequence = ['G','G','Y','B']
+#             user_guess = ""
+#             user_guess_count = 1
+#             puts "I have generated a beginner sequence with four elements made up of: "
+#             print_generated_sequence(game_colours_sequence)
+#             puts "Use (q)uit at any time to end the game."
+#             puts "What's your guess?"
+#             while (user_guess_count <= number_of_guesses || !user_won?(game_colours_sequence,user_guess))
+              
+#               user_guess = gets.chomp 
+
+#               if(!user_won?(game_colours_sequence,user_guess))
+#                 exact_matches = 0; partial_matches = 0;
+#                 #user_guess = user_guess.upcase.split("")
+#                 exact_matches, partial_computer, partial_user = get_exact_matches(game_colours_sequence, user_guess)
+#                 partial_matches = get_partial_matches(partial_computer,partial_user)
+                
+#                 puts "You had #{exact_matches} positions exactly matched and #{partial_matches} near match"
+#                 puts "You have tried #{user_guess_count} times. You have #{number_of_guesses - user_guess_count} attempts left."
+#                 puts "Try again: "
+#                 user_guess_count += 1
+#               else
+#                 puts "Congratulobia You Won"
+#                 break
+#               end
+              
+#             end
+#         end
+#     when 'i','instructions'
+
+#     when 'q','quit'
+#       puts "Bye Bye"
+#       break
+#   end
+# end
 

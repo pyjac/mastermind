@@ -7,10 +7,10 @@ class GameColours
 	end
 
 	def self.intermediate_colour
-		beginner_colours.merge( { "O" => "Orange" , "W" => "White"})
+		beginner_colours.merge( { "O" => "Orange"})
 	end
 
 	def self.advanced_colours
-		intermediate_colour
+		intermediate_colour.merge( {"W" => "White"})
 	end
 end
