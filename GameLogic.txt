@@ -1,0 +1,27 @@
+display Welcome Message
+Display Prompt Message
+	accept input
+	while input != q
+		switch input
+			case p,play
+				display Level Prompt Message
+				accept level
+				switch level
+					case beginner
+						display Beginner Message
+						generate beginner 
+					case Intermediate
+						display Intermediate Message
+					case Advanced
+						display Advanced Message
+				endswitch
+			case i
+				display Instruction Message
+			case q
+				exit game
+			else 
+				"Invalid Input"
+		endswitch
+		accept input
+	endwhile
+end game
