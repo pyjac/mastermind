@@ -13,4 +13,16 @@ class GameColours
 	def self.advanced_colours
 		intermediate_colour.merge( {"W" => "White"})
 	end
+
+	def self.get_game_colours(level)
+		case level
+			when Keys::BEGINNER
+				return beginner_colours
+			when Keys::INTERMEDIATE
+				return intermediate_colour
+			when Keys::ADVANCED
+				return advanced_colours
+		end
+
+	end
 end

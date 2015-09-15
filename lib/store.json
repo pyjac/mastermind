@@ -1,0 +1,14 @@
+{"beginner": [
+      {"name": "Pyjac","guess_time": 2.621e06,"guesses": 5},
+      {"name": "Jac","guess_time": 2.621e06,"guesses": 15}
+    ],
+  "intermediate": [
+      {"name": "Pyjac","guess_time": 2.621e06,"guesses": 5},
+      {"name": "Jac","guess_time": 2.621e06,"guesses": 13}
+    ],
+
+  "advanced": [
+      {"name": "Mayowa","guess_time": 2.621e06,"guesses": 5},
+      {"name": "Sunday","guess_time": 2.621e06,"guesses": 9}
+  ]
+}
