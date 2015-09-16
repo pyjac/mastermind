@@ -8,12 +8,13 @@ class Game
 		initialize_game_values
         print_game_level_message
         while (@user_guess_count <= @number_of_guesses)
+        	print Constants::GAME_INPUT_PROMPT
         	@user_guess = gets.chomp 
           	case @user_guess
 	          	when "q",'quit'
 	          		break
 	          	when "c",'cheat'
-	          		puts "CHEAT: %s\n" % game_colours_sequence.join
+	          		puts Messages::GAME_CHEAT_MESSAGE % game_colours_sequence.join
 	          	else
 	          		if(@user_guess.length > game_colours_sequence.length)
 	          			puts Messages::GAME_LONG_INPUT_MESSAGE % game_colours_sequence.length
@@ -24,9 +25,9 @@ class Game
 	          			next
 	          		end
 
-	          	    masterminder = Masterminder.new(game_colours_sequence, @user_guess.upcase.split(""))
+	          	    @masterminder = Masterminder.new(game_colours_sequence, @user_guess.upcase.split(""))
 
-		            unless masterminder.user_won?
+		            unless @masterminder.user_won?
 			            print_exact_partial_count_message
 			            @user_guess_count += 1
 		            else
@@ -69,7 +70,7 @@ class Game
 	end
 
 	def print_exact_partial_count_message
-		exact_matches , partial_matches = masterminder.get_matches
+		exact_matches , partial_matches = @masterminder.get_matches
 		#p game_colours_sequence
 		attempts_left = @number_of_guesses - @user_guess_count
 		puts Messages::GAME_EXACT_PARTIAL_COUNT_MESSAGE % [exact_matches, partial_matches,@user_guess_count, attempts_left]            
@@ -86,6 +87,7 @@ class Game
 	end
 	def get_player
 	    puts Messages::GAME_PLAYER_NAME_PROMPT 
+	    print Constants::GAME_INPUT_PROMPT
 	    player = Player.new(gets.chomp)
 	    player.guess_time = @player_guess_time
 		player.guesses = @user_guess_count
@@ -94,6 +96,7 @@ class Game
   	end 
 	def play_again?
 		puts Messages::GAME_REPLAY_MESSAGE
+		print Constants::GAME_INPUT_PROMPT
 		user_input = gets.chomp 
 		['p','play'].include?(user_input) ? true : false
 	end

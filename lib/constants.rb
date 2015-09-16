@@ -1,5 +1,7 @@
 class Constants
 
+	GAME_INPUT_PROMPT = "%> "
+
 	NUMBER_OF_GUESSES = 12
 
 	TOPS_LIMIT = 10

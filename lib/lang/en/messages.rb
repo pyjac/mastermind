@@ -1,12 +1,15 @@
 class Messages 
 
-
+	GAME_CHEAT_MESSAGE = "CHEAT: %s\n"
+	
 	GAME_EXIT_MESSAGE = "Bye Bye"
-	GAME_INSTRUCTIONS = "Enter a sequence of 4 colors containing the generated colors e.g RYBG or YGRB.\n" +
-     "If you enter fewer than 4 or more than 4 colors, you would receive an error message"
 
-	WELCOME_MESSAGE = "Welcome to MASTERMIND\n" +
-    "Would you like to #{"(p)lay".colorize(:green)}, read the #{"(i)nstructions".colorize(:blue)}, or #{"(q)uit".colorize(:red)}?\n"
+	GAME_INSTRUCTIONS = 
+	"\nEnter a sequence of 4 colors containing the generated colors e.g RYBG or YGRB.\n".blue.on_white +
+     "If you enter fewer than 4 or more than 4 colors, you would receive an error message\n".blue.on_white
+
+	WELCOME_MESSAGE = "Welcome to the MASTERMIND GAME\n" +
+    "Would you like to #{" (p)lay ".colorize(:green)}, read the #{" (i)nstructions ".colorize(:blue)}, or #{" (q)uit ".colorize(:red)}?\n"
 
     PLAY_GAME_MESSAGE = "To start the game select a level you would like to play:\n"+
      "Enter (b) for Beginner\n"+
@@ -15,7 +18,7 @@ class Messages
 
     GAME_LEVEL_MESSAGE = "I have generated a %s sequence with four elements made up of:\n " +
         "%s \n"+
-        "Use #{"(q)uit".colorize(:red)} at any time to end the game.\n" +
+        "Use #{"(q)uit".colorize(:red).on_white} at any time to end the game.\n" +
         "What's your guess?"
 
     GAME_EXACT_PARTIAL_COUNT_MESSAGE = "You had %s positions exactly matched " +
