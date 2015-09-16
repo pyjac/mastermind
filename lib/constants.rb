@@ -15,6 +15,7 @@ class Constants
 	#TODO: Refactor to PATHS class 
 	GAME_STORE_PATH = 'store.json'
 
+
 	LEVELS = {'b' => 'beginner', 'i' => 'intermediate','a' => 'advanced'}
 end
 

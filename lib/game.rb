@@ -52,7 +52,7 @@ class Game
 
 		            	average_guesses, average_guess_time = store.get_statistics(@level)
 		            	player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
-		            	player_average_guesses = average_guesses - @user_guess_count
+		            	player_average_guesses = [average_guesses - @user_guess_count, 0].max
 
 		            	puts Messages::GAME_CONGRATULATORY_MESSAGE % 
 		            	  [player.name, @user_guess.upcase, @user_guess_count, 

@@ -3,7 +3,7 @@ class GameStore
 
 	def initialize(file)
 		@file_path = file
-		
+
 		unless File.exist?(@file_path)
 			store = Constants::LEVELS.values.inject(Hash.new([])) do |store, level|
 	    				store[level] = []
@@ -45,6 +45,9 @@ class GameStore
 		level = Constants::LEVELS[level]
 
 		store_values = read_store_values
+
+		#Hack to ensure correct value when top limit is changed
+		store_values[level] = store_values[level][0, Constants::TOPS_LIMIT]
 		
 		if(Constants::TOPS_LIMIT > store_values[level].length)
 			store_values[level] << player
