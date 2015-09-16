@@ -30,6 +30,17 @@ class Game
 		            unless @masterminder.user_won?
 			            print_exact_partial_count_message
 			            @user_guess_count += 1
+
+			            if(@user_guess_count > @number_of_guesses)
+			            	puts Messages::GAME_LOSS_MESSAGE
+			            	if play_again?
+				            	initialize_game_values
+		        				print_game_level_message
+				            else
+				            	break
+				            end
+			        	end
+
 		            else
 		            	@player_guess_time = Time.now - @start_time
 		            	game_duration = (@player_guess_time).duration
@@ -42,6 +53,7 @@ class Game
 		            	average_guesses, average_guess_time = store.get_statistics(@level)
 		            	player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
 		            	player_average_guesses = average_guesses - @user_guess_count
+
 		            	puts Messages::GAME_CONGRATULATORY_MESSAGE % 
 		            	  [player.name, @user_guess.upcase, @user_guess_count, 
 		            	  	game_duration,player_average_guess_time,player_average_guesses]

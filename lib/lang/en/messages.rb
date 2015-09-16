@@ -1,7 +1,7 @@
 class Messages 
 
 	GAME_CHEAT_MESSAGE = "CHEAT: %s\n"
-	
+
 	GAME_EXIT_MESSAGE = "Bye Bye"
 
 	GAME_INSTRUCTIONS = 
@@ -41,5 +41,7 @@ class Messages
 
     GAME_PLAYER_NAME_PROMPT = "Cooooool !!! \n" + 
     	"Start by telling me your name: "
+
+    GAME_LOSS_MESSAGE = "===== YOU LOSE =====".red
 
 end
