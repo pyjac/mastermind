@@ -24,7 +24,7 @@ class GameStore
 		level_store = store_values[level]
 
 		average_guesses = Constants::TOPS_LIMIT
-		average_guess_time = 9999999999999999
+		average_guess_time = 9999999999999999 #TODO find a better value
 		unless level_store.empty?
 			statistics = level_store.reduce(Hash.new(0)) do |memo, player|
 
@@ -83,7 +83,7 @@ class GameStore
 
 	def sort_players_scores(players_scores)
 		players_scores.sort do |memo, ele|
-			    result= 0
+			    result = 0
 			    if memo["guesses"] > ele["guesses"]
 			        result = 1
 			    end
@@ -95,7 +95,6 @@ class GameStore
 			        memo["guess_time"] <=  ele["guess_time"] ? result=-1 : result=1
 			    end
 			    result
-			   
 			end
 	end
 

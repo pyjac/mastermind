@@ -42,7 +42,7 @@ class GameEngine
     game = GameBuilder::build_game(user_level,@store)
     game.run()
   end
-
+  
   def self.clear_screen
     system "clear" or system "cls"
   end

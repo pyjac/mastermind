@@ -43,21 +43,16 @@ class Game
 
 		            else
 		            	@player_guess_time = Time.now - @start_time
-		            	game_duration = (@player_guess_time).duration
+		            	@game_duration = (@player_guess_time).duration
 
 		            	puts Messages::GAME_CONGRAT_MESSAGE
-		            	player = get_player
+
+		            	@player = get_player
 
 		            	store.save(@level,player.to_hash)
 
-		            	average_guesses, average_guess_time = store.get_statistics(@level)
-		            	player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
-		            	player_average_guesses = [average_guesses - @user_guess_count, 0].max
-
-		            	puts Messages::GAME_CONGRATULATORY_MESSAGE % 
-		            	  [player.name, @user_guess.upcase, @user_guess_count, 
-		            	  	game_duration,player_average_guess_time,player_average_guesses]
-			            
+		            	print_congratulatory_message
+		            	
 			            print_top_players
 			            
 			            if(play_again?)
@@ -72,7 +67,7 @@ class Game
 	end
 
 	private 
-		attr_accessor :user_guess_count,:user_guess,:start_time,:player_guess_time
+		attr_accessor :user_guess_count,:user_guess,:start_time,:player_guess_time,:game_duration
 
 	def initialize_game_values
 		@user_guess_count = 1
@@ -97,6 +92,17 @@ class Game
 			count += 1
 		end
 	end
+
+	def print_congratulatory_message
+
+		average_guesses, average_guess_time = store.get_statistics(@level)
+		player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
+		player_average_guesses = [average_guesses - @user_guess_count, 0].max
+
+		puts Messages::GAME_CONGRATULATORY_MESSAGE % 
+		        [@player.name, @user_guess.upcase, @user_guess_count, 
+		         @game_duration,player_average_guess_time,player_average_guesses]
+	end
 	def get_player
 	    puts Messages::GAME_PLAYER_NAME_PROMPT 
 	    print Constants::GAME_INPUT_PROMPT
@@ -109,7 +115,7 @@ class Game
 	def play_again?
 		puts Messages::GAME_REPLAY_MESSAGE
 		print Constants::GAME_INPUT_PROMPT
-		user_input = gets.chomp 
+		user_input = gets.chomp.downcase 
 		['p','play'].include?(user_input) ? true : false
 	end
 	def print_game_level_message
