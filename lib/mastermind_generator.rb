@@ -1,5 +1,4 @@
 
-require 'pry'
 class MastermindGenerator
 	def self.generate(level)
 		#game_intermediate_colours = game_beginner_colours.merge({ "L" => "Larender"})

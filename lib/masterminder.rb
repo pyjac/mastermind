@@ -1,6 +1,5 @@
 class Masterminder
-	attr_accessor :game_colours_sequence,:user_colours_sequence
-
+	
 	def initialize(game_colours_sequence,user_colours_sequence)
 		@game_colours_sequence = game_colours_sequence
 		@user_colours_sequence = user_colours_sequence
@@ -42,5 +41,7 @@ class Masterminder
 		end
 		partial_matches
 	end
+	private
+		attr_accessor :game_colours_sequence,:user_colours_sequence
 
 end
