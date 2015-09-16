@@ -1,11 +1,9 @@
 class Player
 
-	attr_accessor :name,:guess_time,:guesses
+	attr_accessor :name,:guess_time,:guesses,:guessed_colours_sequence
 
 	def initialize(name)
-
 		@name = name
-		
 	end
 
 	def to_hash

@@ -10,33 +10,35 @@ class GameStore
 		
 		level = Constants::LEVELS[level]
 
-		file = File.open(@file_path, "r")
-		store_values = JSON.parse(file.read)
-
+		store_values = read_store_values
 		level_store = store_values[level]
-		file.close
 
-		statistics = level_store.reduce(Hash.new(0)) do |memo, player|
+		average_guesses = Constants::TOPS_LIMIT
+		average_guess_time = 9999999999999999
+		unless level_store.empty?
+			statistics = level_store.reduce(Hash.new(0)) do |memo, player|
 
-	         memo["sum_guess"] += player["guesses"]
-	         memo["sum_guess_time"] += player["guess_time"]
-	         memo["players_count"] += 1
-	         memo
+		         memo["sum_guess"] += player["guesses"]
+		         memo["sum_guess_time"] += player["guess_time"]
+		         memo["players_count"] += 1
+		         memo
+	  		end
+	  		average_guesses = statistics["sum_guess"] / statistics["players_count"]
+  			average_guess_time = statistics["sum_guess_time"] / statistics["players_count"]
   		end
-  		average_guesses = statistics["sum_guess"] / statistics["players_count"]
-  		average_guess_time = statistics["sum_guess_time"] / statistics["players_count"]
+  		
   		[average_guesses, average_guess_time]
 	end
 
 	def save(level, player) 
 
 		level = Constants::LEVELS[level]
-		file = File.open(@file_path, "a+")
-		store_values = JSON.parse(file.read)
-		file.close
 
+		store_values = read_store_values
+		
 		if(Constants::TOPS_LIMIT > store_values[level].length)
 			store_values[level] << player
+			overwrite_to_store(store_values)
 		else
 			store_values[level] = sort_players_scores(store_values[level])
 
@@ -44,24 +46,23 @@ class GameStore
 			lasts_player = store_values[level][Constants::TOPS_LIMIT - 1]
 			if(lasts_player["guesses"] > player["guesses"] )
 				store_values[level][Constants::TOPS_LIMIT - 1] = player
-				file = File.open(@file_path, "w")
-				file.puts store_values.to_json
-				file.close
+				overwrite_to_store(store_values)
 			end
-		end
 
-		
+			if(lasts_player["guesses"] == player["guesses"] )
+				if(lasts_player["guess_time"] > player["guesses"] )
+					store_values[level][Constants::TOPS_LIMIT - 1] = player
+					overwrite_to_store(store_values)
+				end
+			end
+
+		end	
 	end
 
 	def get_top_players(level)
 		level = Constants::LEVELS[level]
-
-		file = File.open(@file_path, "r")
-		store_values = JSON.parse(file.read)
-
-		top_players = store_values[level].sort_by! { |hsh| hsh["guesses"]  }
-
-		file.close
+		store_values = read_store_values
+		top_players = sort_players_scores(store_values[level])
 		top_players
 	end
 	private
@@ -83,5 +84,18 @@ class GameStore
 			    result
 			   
 			end
+	end
+
+	def read_store_values
+		file = File.open(@file_path, "r")
+		store_values = JSON.parse(file.read)
+		file.close
+		store_values
+	end
+
+	def overwrite_to_store(game_data)
+		file = File.open(@file_path, "w")
+		file.puts game_data.to_json
+		file.close
 	end
 end

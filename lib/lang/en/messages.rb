@@ -26,7 +26,7 @@ class Messages
     GAME_CONGRAT_MESSAGE = "Congratulations! You've guessed the sequence!"
 
     GAME_CONGRATULATORY_MESSAGE = "%s, you guessed the sequence '%s' in %s guesses over %s.\n" +
-    	"That's 1 minute, 10 seconds faster and two guesses fewer than the average."
+    	"That's %s faster and %s guesses fewer than the average."
     GAME_REPLAY_MESSAGE = "Do you want to #{"(p)lay".colorize(:green)} again or #{"(q)uit".colorize(:red)}?"
     #GAME_CONGRATULATORY_MESSAGE = "Congratulobia You Won !!!"
 

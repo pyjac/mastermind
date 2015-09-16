@@ -30,30 +30,23 @@ class Game
 			            print_exact_partial_count_message
 			            @user_guess_count += 1
 		            else
-		            	player_guess_time = Time.now - @start_time
-		            	game_duration = (player_guess_time).duration
+		            	@player_guess_time = Time.now - @start_time
+		            	game_duration = (@player_guess_time).duration
 
 		            	puts Messages::GAME_CONGRAT_MESSAGE
-
 		            	player = get_player
-		            	player.guess_time = player_guess_time
-		            	player.guesses = @user_guess_count
 
 		            	store.save(@level,player.to_hash)
 
 		            	average_guesses, average_guess_time = store.get_statistics(@level)
+		            	player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
+		            	player_average_guesses = average_guesses - @user_guess_count
 		            	puts Messages::GAME_CONGRATULATORY_MESSAGE % 
-		            			[player.name, @user_guess.upcase, @user_guess_count, game_duration]
+		            	  [player.name, @user_guess.upcase, @user_guess_count, 
+		            	  	game_duration,player_average_guess_time,player_average_guesses]
 			            
-			            top_players = store.get_top_players(@level)
-
-			            puts "=== TOP %s ===" % Constants::TOPS_LIMIT
-			            count = 1 
-			            top_players.each do |player|
-			            	puts "%s. %s solved 'GHHK' in %s guesses over %s" % 
-			            			[count,player["name"],player["guesses"],player["guess_time"].duration]
-			            	count += 1
-			        	end
+			            print_top_players
+			            
 			            if(play_again?)
 			            	initialize_game_values
 	        				print_game_level_message
@@ -66,7 +59,7 @@ class Game
 	end
 
 	private 
-		attr_accessor :user_guess_count,:user_guess,:start_time
+		attr_accessor :user_guess_count,:user_guess,:start_time,:player_guess_time
 
 	def initialize_game_values
 		@user_guess_count = 1
@@ -81,9 +74,23 @@ class Game
 		attempts_left = @number_of_guesses - @user_guess_count
 		puts Messages::GAME_EXACT_PARTIAL_COUNT_MESSAGE % [exact_matches, partial_matches,@user_guess_count, attempts_left]            
 	end
+	def print_top_players
+		top_players = store.get_top_players(@level)
+		puts "=== TOP %s ===" % Constants::TOPS_LIMIT
+		count = 1 
+		top_players.each do |player|
+			 puts "%s. %s solved '%s' in %s guesses over %s" % 
+			      [count,player["name"],player["guessed_colours_sequence"],player["guesses"],player["guess_time"].duration]
+			count += 1
+		end
+	end
 	def get_player
 	    puts Messages::GAME_PLAYER_NAME_PROMPT 
-	    Player.new(gets.chomp)
+	    player = Player.new(gets.chomp)
+	    player.guess_time = @player_guess_time
+		player.guesses = @user_guess_count
+		player.guessed_colours_sequence = @user_guess.upcase
+		player
   	end 
 	def play_again?
 		puts Messages::GAME_REPLAY_MESSAGE
