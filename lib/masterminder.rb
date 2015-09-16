@@ -22,17 +22,17 @@ class Masterminder
 
 	def get_exact_matches
 	  exact_matches = 0
-	  p_u = []
-	  p_c = []
+	  partial_user = []
+	  partial_computer = []
 	  @game_colours_sequence.zip(@user_colours_sequence).map do |value|
 	      if value[0] == value[1]
 	         exact_matches += 1
 	      else
-	          p_c << value[0]
-	          p_u << value[1]
+	          partial_computer << value[0]
+	          partial_user << value[1]
 	      end
 	  end
-	  [exact_matches, p_c, p_u]
+	  [exact_matches, partial_computer, partial_user]
 	end
 
 	def get_partial_matches(partial_computer,partial_user)
