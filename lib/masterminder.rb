@@ -36,27 +36,14 @@ class Masterminder
 	end
 
 	def get_partial_matches(partial_computer,partial_user)
-  
-	  partial_computer=partial_computer.reduce(Hash.new(0)) do |memo,ele|
-	      memo[ele]+=1
-	     memo
-	  end
-	  partial_user=partial_user.reduce(Hash.new(0)) do |memo,ele|
-	      memo[ele]+=1
-	    memo
-	  end
-	 
-	  result =0
-	  partial_user.merge(partial_computer) do |key, oldval, newval| 
-	      
-	      if newval >= oldval
-	          result += oldval
-	      else
-	          result +=newval
-	      end
-	     
-	  end
-	  result
+	  	partial_matches = 0 
+		partial_user.each do |value|
+		    if(partial_computer.include?(value))
+		        partial_computer.delete_at(partial_computer.index(value))
+		        partial_matches += 1
+		    end
+		end
+		partial_matches
 	end
 
 end
