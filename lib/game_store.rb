@@ -3,7 +3,17 @@ class GameStore
 
 	def initialize(file)
 		@file_path = file
-		@store = JSON.parse(File.read(file)) #open(file, 'a')
+		
+		unless File.exist?(@file_path)
+			store = Constants::LEVELS.values.inject(Hash.new([])) do |store, level|
+	    				store[level] = []
+					    store
+					end
+			file = File.open(@file_path, "a+")
+			file.puts store.to_json
+			file.close		
+		end
+		#@store = JSON.parse(File.read(file)) #open(file, 'a')
 	end
 
 	def get_statistics(level)
