@@ -9,7 +9,7 @@ class Game
         print_game_level_message
         while (@user_guess_count <= @number_of_guesses)
         	print Constants::GAME_INPUT_PROMPT
-        	@user_guess = gets.chomp 
+        	@user_guess = gets.chomp.downcase 
           	case @user_guess
 	          	when "q",'quit'
 	          		break
