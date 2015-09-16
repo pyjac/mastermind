@@ -4,6 +4,8 @@ class Messages
 
 	GAME_EXIT_MESSAGE = "Bye Bye"
 
+	GAME_TOPS_HEADER = "==================== TOP %s ====================".yellow
+
 	GAME_INSTRUCTIONS = 
 	"\nEnter a sequence of 4 colors containing the generated colors e.g RYBG or YGRB.\n".blue.on_white +
      "If you enter fewer than 4 or more than 4 colors, you would receive an error message\n".blue.on_white
@@ -11,10 +13,12 @@ class Messages
 	WELCOME_MESSAGE = "Welcome to the MASTERMIND GAME\n" +
     "Would you like to #{" (p)lay ".colorize(:green)}, read the #{" (i)nstructions ".colorize(:blue)}, or #{" (q)uit ".colorize(:red)}?\n"
 
-    PLAY_GAME_MESSAGE = "To start the game select a level you would like to play:\n"+
+    PLAY_GAME_MESSAGE = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"+
+    "To start the game select a level you would like to play:\n"+
      "Enter (b) for Beginner\n"+
      "Enter (i) for Intermediate\n" +
-     "Enter (a) for Advanced"
+     "Enter (a) for Advanced\n"+
+     "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
     GAME_LEVEL_MESSAGE = "I have generated a %s sequence with four elements made up of:\n " +
         "%s \n"+
@@ -26,10 +30,10 @@ class Messages
         "You have tried %s times. You have %s attempts left.\n"+
         "Try again: "
 
-    GAME_CONGRAT_MESSAGE = "Congratulations! You've guessed the sequence!"
+    GAME_CONGRAT_MESSAGE = "Congratulations! You've guessed the sequence!".green
 
-    GAME_CONGRATULATORY_MESSAGE = "%s, you guessed the sequence '%s' in %s guesses over %s.\n" +
-    	"That's %s faster and %s guesses fewer than the average."
+    GAME_CONGRATULATORY_MESSAGE = ("%s, you guessed the sequence '%s' in %s guesses over %s.\n" +
+    	"That's %s faster and %s guesses fewer than the average.").green
     GAME_REPLAY_MESSAGE = "Do you want to #{"(p)lay".colorize(:green)} again or #{"(q)uit".colorize(:red)}?"
     #GAME_CONGRATULATORY_MESSAGE = "Congratulobia You Won !!!"
 
@@ -42,6 +46,6 @@ class Messages
     GAME_PLAYER_NAME_PROMPT = "Cooooool !!! \n" + 
     	"Start by telling me your name: "
 
-    GAME_LOSS_MESSAGE = "===== YOU LOSE =====".red
+    GAME_LOSS_MESSAGE = "======== YOU LOSE ========".red
 
 end

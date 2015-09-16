@@ -84,7 +84,7 @@ class Game
 	end
 	def print_top_players
 		top_players = store.get_top_players(@level)
-		puts "=== TOP %s ===" % Constants::TOPS_LIMIT
+		puts Messages::GAME_TOPS_HEADER % Constants::TOPS_LIMIT
 		count = 1 
 		top_players.each do |player|
 			 puts "%s. %s solved '%s' in %s guesses over %s" % 

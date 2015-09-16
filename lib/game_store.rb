@@ -26,17 +26,9 @@ class GameStore
 		average_guesses = Constants::TOPS_LIMIT
 		average_guess_time = 9999999999999999 #TODO find a better value
 		unless level_store.empty?
-			statistics = level_store.reduce(Hash.new(0)) do |memo, player|
-
-		         memo["sum_guess"] += player["guesses"]
-		         memo["sum_guess_time"] += player["guess_time"]
-		         memo["players_count"] += 1
-		         memo
-	  		end
-	  		average_guesses = statistics["sum_guess"] / statistics["players_count"]
-  			average_guess_time = statistics["sum_guess_time"] / statistics["players_count"]
+			average_guesses, average_guess_time = compute_statistics(level_store)
   		end
-  		
+
   		[average_guesses, average_guess_time]
 	end
 
@@ -98,6 +90,17 @@ class GameStore
 			end
 	end
 
+	def compute_statistics(level_store)
+		statistics = level_store.reduce(Hash.new(0)) do |memo, player|
+		         memo["sum_guess"] += player["guesses"]
+		         memo["sum_guess_time"] += player["guess_time"]
+		         memo["players_count"] += 1
+		         memo
+	  		end
+	  	average_guesses = statistics["sum_guess"] / statistics["players_count"]
+  		average_guess_time = statistics["sum_guess_time"] / statistics["players_count"]
+  		[average_guesses, average_guess_time]
+	end
 	def read_store_values
 		file = File.open(@file_path, "r")
 		store_values = JSON.parse(file.read)
