@@ -6,6 +6,8 @@ class GameEngine
     display_welcome_message
     while (user_input != "q")
       print Constants::GAME_INPUT_PROMPT
+      #evaluate_user_input(gets.chomp)
+
       user_input = gets.chomp
       case user_input
         when 'p','play'
