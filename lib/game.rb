@@ -1,7 +1,7 @@
 require_relative "extensions/numeric"
 class Game
 
-	attr_accessor :level,:player,:game_colours_sequence,:game_colours,:masterminder,:number_of_guesses,:store
+	attr_accessor :level,:player,:game_colours_sequence,:game_colours,:masterminder,:number_of_guesses
 
 
 	def run
@@ -15,13 +15,14 @@ class Game
 	end
 
 	private 
-		attr_accessor :user_guess_count,:user_guess,:start_time,:player_guess_time,:game_duration
+		attr_accessor :user_guess_count,:user_guess,:start_time,:player_guess_time,:game_duration,:store
 
 	def initialize_game_values
 		@user_guess_count = 1
         @user_guess = ""
         @start_time = Time.now
         @game_colours_sequence = MastermindGenerator::generate(@level)
+        @store = GameStore.new(Constants::GAME_STORE_PATH,@level)
 	end
 
 	def play
@@ -49,7 +50,7 @@ class Game
 
 		            	@player = get_player
 
-		            	store.save(@level,player.to_hash)
+		            	store.save(player.to_hash)
 
 		            	print_congratulatory_message
 		            	
@@ -85,7 +86,7 @@ class Game
 		puts Messages::GAME_EXACT_PARTIAL_COUNT_MESSAGE % [exact_matches, partial_matches,@user_guess_count, attempts_left]            
 	end
 	def print_top_players
-		top_players = store.get_top_players(@level)
+		top_players = store.get_top_players
 		puts Messages::GAME_TOPS_HEADER % Constants::TOPS_LIMIT
 		count = 1 
 		top_players.each do |player|
@@ -96,7 +97,7 @@ class Game
 	end
 	def print_congratulatory_message
 
-		average_guesses, average_guess_time = store.get_statistics(@level)
+		average_guesses, average_guess_time = store.get_statistics
 		player_average_guess_time = (average_guess_time - @player_guess_time).duration || 0
 		player_average_guesses = [average_guesses - @user_guess_count, 0].max
 

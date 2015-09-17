@@ -1,9 +1,9 @@
 
 class GameStore
 
-	def initialize(file)
-		@file_path = file
-
+	def initialize(file_path,level)
+		@file_path = file_path
+		@level = Constants::LEVELS[level]
 		unless File.exist?(@file_path)
 			store = Constants::LEVELS.values.inject(Hash.new([])) do |store, level|
 	    				store[level] = []
@@ -16,12 +16,10 @@ class GameStore
 		#@store = JSON.parse(File.read(file)) #open(file, 'a')
 	end
 
-	def get_statistics(level)
-		
-		level = Constants::LEVELS[level]
-
+	def get_statistics
+	
 		store_values = read_store_values
-		level_store = store_values[level]
+		level_store = store_values[@level]
 
 		average_guesses = Constants::TOPS_LIMIT
 		average_guess_time = 9999999999999999 #TODO find a better value
@@ -32,31 +30,29 @@ class GameStore
   		[average_guesses, average_guess_time]
 	end
 
-	def save(level, player) 
-
-		level = Constants::LEVELS[level]
+	def save(player) 
 
 		store_values = read_store_values
 
 		#Hack to ensure correct value when top limit is changed
-		store_values[level] = store_values[level][0, Constants::TOPS_LIMIT]
+		store_values[@level] = store_values[@level][0, Constants::TOPS_LIMIT]
 		
-		if(Constants::TOPS_LIMIT > store_values[level].length)
-			store_values[level] << player
+		if(Constants::TOPS_LIMIT > store_values[@level].length)
+			store_values[@level] << player
 			overwrite_to_store(store_values)
 		else
-			store_values[level] = sort_players_scores(store_values[level])
+			store_values[@level] = sort_players_scores(store_values[@level])
 
 			#TODO Refactor 
-			lasts_player = store_values[level][Constants::TOPS_LIMIT - 1]
+			lasts_player = store_values[@level][Constants::TOPS_LIMIT - 1]
 			if(lasts_player["guesses"] > player["guesses"] )
-				store_values[level][Constants::TOPS_LIMIT - 1] = player
+				store_values[@level][Constants::TOPS_LIMIT - 1] = player
 				overwrite_to_store(store_values)
 			end
 
 			if(lasts_player["guesses"] == player["guesses"] )
 				if(lasts_player["guess_time"] > player["guesses"] )
-					store_values[level][Constants::TOPS_LIMIT - 1] = player
+					store_values[@level][Constants::TOPS_LIMIT - 1] = player
 					overwrite_to_store(store_values)
 				end
 			end
@@ -64,14 +60,13 @@ class GameStore
 		end	
 	end
 
-	def get_top_players(level)
-		level = Constants::LEVELS[level]
+	def get_top_players
 		store_values = read_store_values
-		top_players = sort_players_scores(store_values[level])
+		top_players = sort_players_scores(store_values[@level])
 		top_players
 	end
 	private
-	  attr_accessor :file_path,:store
+	  attr_accessor :file_path,:store,:level
 
 	def sort_players_scores(players_scores)
 		players_scores.sort do |memo, ele|

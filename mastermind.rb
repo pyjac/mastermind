@@ -13,5 +13,5 @@ require_relative "lib/player"
 require_relative "lib/game_engine"
 require_relative "lib/game_store"
 
-store = GameStore.new(Constants::GAME_STORE_PATH)
-GameEngine.run(store)
+
+GameEngine.run()

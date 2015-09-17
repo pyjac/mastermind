@@ -1,7 +1,6 @@
 class GameEngine
 
-  def self.run(store)
-    @store = store
+  def self.run()
     user_input = ""
     clear_screen
     display_welcome_message
@@ -39,10 +38,10 @@ class GameEngine
       user_level = 'b' #Default Level 
     end
 
-    game = GameBuilder::build_game(user_level,@store)
+    game = GameBuilder::build_game(user_level)
     game.run()
   end
-  
+
   def self.clear_screen
     system "clear" or system "cls"
   end
