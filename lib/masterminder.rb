@@ -5,7 +5,7 @@ class Masterminder
 		@user_colours_sequence = user_colours_sequence
 	end
 
-	def user_won?
+	def player_won?
 		@game_colours_sequence == @user_colours_sequence
 	end
 

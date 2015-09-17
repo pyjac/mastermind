@@ -5,64 +5,12 @@ class Game
 
 
 	def run
-		initialize_game_values
-        print_game_level_message
-        while (@user_guess_count <= @number_of_guesses)
-        	print Constants::GAME_INPUT_PROMPT
-        	@user_guess = gets.chomp.downcase 
-          	case @user_guess
-	          	when "q",'quit'
-	          		break
-	          	when "c",'cheat'
-	          		puts Messages::GAME_CHEAT_MESSAGE % game_colours_sequence.join
-	          	else
-	          		if(@user_guess.length > game_colours_sequence.length)
-	          			puts Messages::GAME_LONG_INPUT_MESSAGE % game_colours_sequence.length
-	          			next
-	          		end
-	          		if(@user_guess.length < game_colours_sequence.length)
-	          			puts Messages::GAME_SHORT_INPUT_MESSAGE % game_colours_sequence.length
-	          			next
-	          		end
-
-	          	    @masterminder = Masterminder.new(game_colours_sequence, @user_guess.upcase.split(""))
-
-		            unless @masterminder.user_won?
-			            print_exact_partial_count_message
-			            @user_guess_count += 1
-
-			            if(@user_guess_count > @number_of_guesses)
-			            	puts Messages::GAME_LOSS_MESSAGE
-			            	if play_again?
-				            	initialize_game_values
-		        				print_game_level_message
-				            else
-				            	break
-				            end
-			        	end
-
-		            else
-		            	@player_guess_time = Time.now - @start_time
-		            	@game_duration = (@player_guess_time).duration
-
-		            	puts Messages::GAME_CONGRAT_MESSAGE
-
-		            	@player = get_player
-
-		            	store.save(@level,player.to_hash)
-
-		            	print_congratulatory_message
-		            	
-			            print_top_players
-			            
-			            if(play_again?)
-			            	initialize_game_values
-	        				print_game_level_message
-			            else
-			            	break
-			            end
-		            end
-          	end
+		
+        while true
+        	play
+        	unless play_again?
+        		break
+        	end
         end
 	end
 
@@ -76,6 +24,60 @@ class Game
         @game_colours_sequence = MastermindGenerator::generate(@level)
 	end
 
+	def play
+		initialize_game_values
+        print_game_level_message
+        while (@user_guess_count <= @number_of_guesses)
+        	print Constants::GAME_INPUT_PROMPT
+        	@user_guess = gets.chomp.downcase 
+          	case @user_guess
+	          	when "q",'quit'
+	          		break
+	          	when "c",'cheat'
+	          		puts Messages::GAME_CHEAT_MESSAGE % game_colours_sequence.join
+	          	else
+	          		if !is_player_guess_valid?
+	          			next
+	          		end
+
+	          	    @masterminder = Masterminder.new(game_colours_sequence, @user_guess.upcase.split(""))
+
+		            if @masterminder.player_won?
+		            	@player_guess_time = Time.now - @start_time
+		            	@game_duration = (@player_guess_time).duration
+		            	puts Messages::GAME_CONGRAT_MESSAGE
+
+		            	@player = get_player
+
+		            	store.save(@level,player.to_hash)
+
+		            	print_congratulatory_message
+		            	
+			            print_top_players
+			            break
+		            else
+		            	print_exact_partial_count_message
+			            @user_guess_count += 1
+
+			            if(@user_guess_count > @number_of_guesses)
+			            	puts Messages::GAME_LOSS_MESSAGE
+			            	break
+			        	end
+		            end
+          	end
+        end
+	end
+	def is_player_guess_valid?
+		if(@user_guess.length > game_colours_sequence.length)
+  			puts Messages::GAME_LONG_INPUT_MESSAGE % game_colours_sequence.length
+  			return false
+  		end
+  		if(@user_guess.length < game_colours_sequence.length)
+  			puts Messages::GAME_SHORT_INPUT_MESSAGE % game_colours_sequence.length
+  			return false
+  		end
+  		true
+	end
 	def print_exact_partial_count_message
 		exact_matches , partial_matches = @masterminder.get_matches
 		#p game_colours_sequence
@@ -92,7 +94,6 @@ class Game
 			count += 1
 		end
 	end
-
 	def print_congratulatory_message
 
 		average_guesses, average_guess_time = store.get_statistics(@level)

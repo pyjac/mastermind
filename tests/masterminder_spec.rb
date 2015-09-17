@@ -23,14 +23,14 @@ describe "Masterminder" do
 
     it "can detect if player won" do
   		
-  		expect(@masterminder.user_won?).to eql(false)
+  		expect(@masterminder.player_won?).to eql(false)
 
   		@masterminder = Masterminder.new(['G','G','Y','B'],['G','G','G','R'])
 
-  		expect(@masterminder.user_won?).to eql(false)
+  		expect(@masterminder.player_won?).to eql(false)
 
   		@masterminder = Masterminder.new(['G','G','Y','B'],['G','G','Y','B'])
 
-  		expect(@masterminder.user_won?).to eql(true)
+  		expect(@masterminder.player_won?).to eql(true)
     end
 end
